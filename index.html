@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./bootstrop/css/bootstrap.min.css">
+</head>
+
+<body>
+    <table class="table" style="text-align: center;white-space: nowrap;">
+
+    </table>
+
+    <script src="./jquery-3.3.1.min.js"></script>
+    <script src="./bootstrop/js/bootstrap.min.js"></script>
+    <script src="./treeTab.js"></script>
+    <script>
+        $.ajax({
+            type: "get",
+            url: "./hope.json",
+            dataType: "json",
+            success: function (res) {
+                $('.table').ZQJ({
+                    'datas': res,
+                    'cols': [{
+                        key: 'remark',
+                        title: '词根',
+                    }, {
+                        key: 'deptId',
+                        title: '消费',
+                    }, {
+                        key: 'name',
+                        title: '展现',
+                    }, {
+                        key: 'nameEn',
+                        title: '点击',
+                    }, {
+                        key: 'headMan',
+                        title: '访问',
+                    }, {
+                        key: 'address',
+                        title: '对话',
+                    }, {
+                        key: 'tel',
+                        title: '有效',
+                    }, {
+                        key: 'functions',
+                        title: '留联',
+                    }]
+                })
+            }
+        });
+    </script>
+
+</html>
