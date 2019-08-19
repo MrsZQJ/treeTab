@@ -26,35 +26,28 @@
         return this.template()
 
     }
-    Tree.prototype.disposeDate = function (data, i, num = 0) {
+    Tree.prototype.disposeDate = function (data, idx) {
         var disposeData = this.options['disposeData'],
             indexGroup = [],
-            that = this
-        i += 1
-        this.idx = i
+            that = this,
+            i = 0
 
-        $.each(data, function (index, list) {
-            indexGroup.push(list)
-        })
-        $.each(indexGroup, function (index, list) {
-            list.zqjId = i
-            list.fatherId = num
-            disposeData.push(list)
-            if (list.children.length > 0) {
-                that.disposeDate(list.children, i, list[that.options['baseId']])
-            } else {
-                list.endArr = true;
-            }
-        })
-        this.data = disposeData
-    }
-    Tree.prototype.disposeDate = function (data, i, num = 0) {
-        var disposeData = this.options['disposeData'],
-            indexGroup = [],
-            that = this
+        forfor(data, num = 0)
 
-        function forfor(){
-            
+        function forfor(data, i, num) {
+            i += 1
+            this.idx = i
+            $.each(data, function (index, list) {
+                list.zqjId = i
+                list.fatherId = num
+                disposeData.push(list)
+                if (list.children.length > 0) {
+                    return forfor(list.children, i, list[that.options['baseId']])
+                } else {
+                    list.endArr = true;
+                }
+            })
+            that.data = disposeData
         }
     }
     Tree.prototype.template = function () {
@@ -69,10 +62,10 @@
             marginLeft = this.options['marginLeft'],
             noCheck = this.options['noCheck']
         $.each(cols, function (index, item) {
-            // td += '<th>' + item.title + '</th>'
             td += `<th style="text-align:${that.options['textAlign']}">${item.title}</th>`
             keyGroup.push(item.key)
         })
+
         headTr += '<tr>' + td + '</tr>'
         td = ''
 
@@ -86,11 +79,7 @@
                     td += `<td>${item[value]}</td>`
                 }
             })
-            // if (item.zqjId > 1) {
             bodyTr += '<tr style="diplay:none">' + td + '</tr>'
-            // } else {
-            //     bodyTr += '<tr>' + td + '</tr>'
-            // }
             td = ''
 
         })
@@ -104,36 +93,25 @@
             cla = ' '
         $('.zqjClick').on('click', '.bind', function () {
             var begin = $(this).children().eq(0).attr('class') == that.options['noCheck'] ? that.options['checked'] : that.options['noCheck'],
-                num = $(this).attr('data-num'),
-                fatherId = $(this).attr('data-id')
+                num = $(this).attr('data-num')
             $(this).children().eq(0).attr('class', begin)
             if ($(this).children('i').eq(0).attr('class') == that.options['noCheck']) {
                 cla = undefined
             } else {
                 cla = 'none'
             }
-            asd(data)
 
-            function asd(data) {
-                var item = false
+            asd(data, num)
+
+            function asd(data, dateNum) {
+                var itemmun = []
                 $.each(data, function (idx, item) {
-                    if (item.fatherId == num) {
-                        console.log(item);
-
+                    if (item.fatherId == dateNum) {
                         numArr.push(item[that.options['baseId']])
-                        if (!item.endArr) {
-                            num = item[that.options['baseId']]
-                        }
-                        if (item.children.length > 0) {
-                            item = true
-                        } else {
-                            item = false
-                        }
+                        itemmun = item[that.options['baseId']]
+                        asd(item.children, itemmun)
                     }
                 })
-                if (item) {
-                    return asd(item.children)
-                }
             }
             $.each(numArr, function (idx, item) {
                 $.each($('.bind'), function (index, value) {
@@ -146,8 +124,6 @@
                     }
                 })
             })
-            console.log(numArr);
-
             numArr = []
         })
     }
